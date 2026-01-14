@@ -37,7 +37,7 @@ HEADERS = {
 
 MAX_SEEN = 500
 DEFAULT_INTERVAL_SECONDS = 600
-DEFAULT_DB_PATH = "seen.db"
+DEFAULT_DB_PATH = "/data/seen.db"
 SARAMIN_LIMIT = 20
 
 ENV_DISCORD_WEBHOOK = "DISCORD_WEBHOOK"
@@ -55,5 +55,9 @@ def load_env_file(path: str) -> None:
             if not stripped or stripped.startswith("#") or "=" not in stripped:
                 continue
             key, value = stripped.split("=", 1)
-            value = value.strip().strip("\"").strip("'")
-            os.environ.setdefault(key.strip(), value)
+            key = key.strip()
+            value = value.strip()
+            value = value.strip("\"")
+            value = value.strip("'")
+            resolved_value = os.environ.get(key, value)
+            os.environ[key] = resolved_value
