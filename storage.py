@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import time
 from typing import Iterable
@@ -7,7 +8,13 @@ class SeenStore:
     def __init__(self, db_path: str, max_seen: int) -> None:
         self._db_path = db_path
         self._max_seen = max_seen
+        self._ensure_parent_dir()
         self._init_db()
+
+    def _ensure_parent_dir(self) -> None:
+        parent_dir = os.path.dirname(self._db_path)
+        if parent_dir:
+            os.makedirs(parent_dir, exist_ok=True)
 
     def _connect(self) -> sqlite3.Connection:
         return sqlite3.connect(self._db_path)
