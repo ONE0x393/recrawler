@@ -1,0 +1,19 @@
+services:
+  recruit-bot:
+    # Build from current directory for local testing
+    # For production, you might change this to the GHCR image: 
+    # image: ghcr.io/YOUR_GITHUB_USERNAME/recruit-bot:latest
+    build: .
+    container_name: recruit-bot
+    restart: unless-stopped
+    # Environment variables from .env file
+    env_file:
+      - .env
+    environment:
+      # Ensure DB path is absolute and points to the volume
+      - SEEN_DB_PATH=/data/seen.db
+      # Set timezone
+      - TZ=Asia/Seoul
+    volumes:
+      # Mount a local 'data' folder to /data in container for persistence
+      - ./data:/data

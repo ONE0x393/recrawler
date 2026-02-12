@@ -66,15 +66,23 @@ SEEN_DB_PATH=seen.db
 - `CRAWL_INTERVAL_SECONDS` (선택)
 - `SEEN_DB_PATH=/data/seen.db` (영속 저장 시)
 
-### 3) 볼륨(영속 저장) 추가
+## Docker & 사설망 배포 (Proxmox/HomeLab)
 
-- Add Volume → Mount Path: `/data`
-- 위 경로로 SQLite를 저장하면 재배포 후에도 중복 기록이 유지됩니다.
+사설망(Private Network)에 있는 서버(Proxmox LXC, Raspberry Pi 등)에 배포하고, GitHub Actions로 자동 업데이트를 구성할 수 있습니다.
 
-### 4) 실행
+1. **Docker 컨테이너화**: `Dockerfile` 및 `docker-compose.yml` 제공
+2. **사설망 CI/CD**: GitHub Self-Hosted Runner를 이용한 방화벽 우회 자동 배포
+3. **상세 가이드**: [deploy/README.md](deploy/README.md) 파일을 참고하세요.
 
-- `Procfile`이 있으면 `worker: python run.py`로 자동 실행
-- 또는 Start Command에 `python run.py` 설정
+### 빠른 시작 (Docker Compose)
+
+```bash
+# 1. .env 파일 생성
+cp .env.example .env # 또는 직접 생성
+
+# 2. 실행
+docker compose up -d
+```
 
 ## 동작 방식
 
