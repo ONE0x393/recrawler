@@ -55,6 +55,9 @@ jobs:
 
       - name: Pull and Restart Docker Container
         run: |
+          cat << EOF > run-container.sh
+          #!/bin/bash
+          
           IMAGE_ID=$(echo ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }})
           
           docker pull $IMAGE_ID:latest
@@ -72,5 +75,8 @@ jobs:
             -e SEEN_DB_PATH=/data/seen.db \
             -e TZ=Asia/Seoul \
             $IMAGE_ID:latest
+          EOF
+
+          ssh recrawler sh < ./run-container.sh
             
           docker image prune -f
