@@ -72,5 +72,8 @@ jobs:
             docker image prune -f
           EOF
 
+          chmod +x ./run-container.sh
+
           ssh app-recrawler sh < ./run-container.sh
             
+
