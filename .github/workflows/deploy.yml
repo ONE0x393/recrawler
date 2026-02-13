@@ -70,7 +70,7 @@ jobs:
   
           docker run -d --name recruit-bot --restart unless-stopped \
             -v "\$(pwd)/data:/data" \
-            --env-file "\${ENV_PATH}" \
+            --env-file "${ENV_PATH}" \
             -e SEEN_DB_PATH=/data/seen.db \
             -e TZ=Asia/Seoul \
             "\${IMAGE_ID}:latest"
