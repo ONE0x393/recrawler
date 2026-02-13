@@ -52,6 +52,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          ENV_PATH: ${{ secrets.ENV_PATH }}
         run: |
           ssh app-recrawler "bash -se" <<EOF
           set -euo pipefail
@@ -69,9 +70,11 @@ jobs:
   
           docker run -d --name recruit-bot --restart unless-stopped \
             -v "\$(pwd)/data:/data" \
+            --env-file "\${ENV_PATH}" \
             -e SEEN_DB_PATH=/data/seen.db \
             -e TZ=Asia/Seoul \
             "\${IMAGE_ID}:latest"
   
           docker image prune -f
           EOF
+
