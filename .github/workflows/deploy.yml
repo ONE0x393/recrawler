@@ -56,24 +56,23 @@ jobs:
       - name: Pull and Restart Docker Container
         run: |
           cat << EOF > run-container.sh
-            #!/bin/bash
-            
-            IMAGE_ID=$(echo ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }})
-            
-            docker pull $IMAGE_ID:latest
-            
-            docker stop recruit-bot || true
-            docker rm recruit-bot || true
-            
-            mkdir -p $(pwd)/data
-            
-            docker run -d --name recruit-bot --restart unless-stopped --env-file .env -v $(pwd)/data:/data -e SEEN_DB_PATH=/data/seen.db -e TZ=Asia/Seoul $IMAGE_ID:latest
+          #!/bin/bash
+          
+          IMAGE_ID=$(echo ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }})
+          
+          docker pull $IMAGE_ID:latest
+          
+          docker stop recruit-bot || true
+          docker rm recruit-bot || true
+          
+          mkdir -p $(pwd)/data
+          
+          docker run -d --name recruit-bot --restart unless-stopped --env-file .env -v $(pwd)/data:/data -e SEEN_DB_PATH=/data/seen.db -e TZ=Asia/Seoul $IMAGE_ID:latest
 
-            docker image prune -f
+          docker image prune -f
           EOF
-
-          chmod +x ./run-container.sh
 
           ssh app-recrawler sh < ./run-container.sh
             
+
 
